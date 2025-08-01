@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowBackground">@color/backgroundColor</item>
+    </style>
+
+
+    <style name="PrimaryButton" parent="Widget.AppCompat.Button">
+        <item name="android:background">@drawable/button_primary_background</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:padding">16dp</item>
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:layout_marginBottom">8dp</item>
+        <item name="android:elevation">4dp</item>
+    </style>
+
+    <style name="SecondaryButton" parent="Widget.AppCompat.Button">
+        <item name="android:background">@drawable/button_secondary_background</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:padding">16dp</item>
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:layout_marginBottom">8dp</item>
+        <item name="android:elevation">2dp</item>
+    </style>
+
+
+    <style name="CustomEditText" parent="Widget.AppCompat.EditText">
+        <item name="android:background">@drawable/edittext_background</item>
+        <item name="android:padding">16dp</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/textPrimary</item>
+        <item name="android:textColorHint">@color/textSecondary</item>
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:layout_marginBottom">8dp</item>
+    </style>
+
+
+    <style name="CustomCard" parent="CardView">
+        <item name="cardCornerRadius">8dp</item>
+        <item name="cardElevation">4dp</item>
+        <item name="android:layout_margin">8dp</item>
+        <item name="cardBackgroundColor">@android:color/white</item>
+    </style>
+
+
+    <style name="TitleText">
+        <item name="android:textSize">24sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/textPrimary</item>
+        <item name="android:layout_marginBottom">16dp</item>
+    </style>
+
+
+    <style name="SubtitleText">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/textSecondary</item>
+        <item name="android:layout_marginBottom">8dp</item>
+    </style>
+</resources>

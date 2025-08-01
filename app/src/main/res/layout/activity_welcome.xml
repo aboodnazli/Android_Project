@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/backgroundColor"
+    android:padding="24dp">
+
+
+    <LinearLayout
+        android:id="@+id/logoContainer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="80dp"
+        android:orientation="vertical"
+        android:gravity="center">
+
+
+        <ImageView
+            android:id="@+id/appLogo"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:src="@drawable/ic_store_logo"
+            android:contentDescription="شعار المتجر"
+            android:layout_marginBottom="16dp" />
+
+
+        <TextView
+            android:id="@+id/appName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="متجر فلسطين الدولي"
+            android:textSize="28sp"
+            android:textStyle="bold"
+            android:textColor="@color/colorPrimary"
+            android:layout_marginBottom="8dp" />
+
+
+        <TextView
+            android:id="@+id/welcomeMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="اكتشف أفضل المنتجات بأسعار مميزة"
+            android:textSize="16sp"
+            android:textColor="@color/textSecondary"
+            android:gravity="center"
+            android:layout_marginBottom="32dp" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/buttonsContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="32dp"
+        android:orientation="vertical">
+
+
+        <Button
+            android:id="@+id/loginButton"
+            style="@style/PrimaryButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="تسجيل الدخول"
+            android:drawableStart="@drawable/ic_login"
+            android:drawablePadding="8dp" />
+
+
+        <Button
+            android:id="@+id/registerButton"
+            style="@style/SecondaryButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="إنشاء حساب جديد"
+            android:drawableStart="@drawable/ic_person_add"
+            android:drawablePadding="8dp" />
+
+
+        <TextView
+            android:id="@+id/browseAsGuest"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="16dp"
+            android:text="تصفح كضيف"
+            android:textColor="@color/colorPrimary"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:padding="8dp" />
+
+    </LinearLayout>
+
+</RelativeLayout>
