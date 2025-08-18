@@ -1,3 +1,51 @@
 <resources>
     <string name="app_name">MidTermProject</string>
+    <string name="shopping_cart_title">سلة التسوق</string>
+    <string name="proceed_to_checkout_button_text">المتابعة إلى الدفع</string>
+    <string name="product_image_description">صورة المنتج</string>
+    <string name="decrease_quantity_description">تقليل الكمية</string>
+    <string name="increase_quantity_description">زيادة الكمية</string>
+    <string name="remove_from_cart_description">حذف من السلة</string>
+    <string name="shopping_cart_description">سلة التسوق</string>
+    <string name="user_profile_title">ملف المستخدم</string>
+    <string name="personal_info_title">المعلومات الشخصية</string>
+    <string name="order_history_title">سجل الطلبات</string>
+    <string name="settings_title">الإعدادات</string>
+    <string name="user_profile_image_description">صورة المستخدم</string>
+    <string name="change_profile_picture">تغيير الصورة</string>
+    <string name="full_name_hint">الاسم الكامل</string>
+    <string name="email_hint">البريد الإلكتروني</string>
+    <string name="phone_hint">رقم الهاتف</string>
+    <string name="cancel_button_text">إلغاء</string>
+    <string name="save_button_text">حفظ</string>
+    <string name="empty_orders_description">لا توجد طلبات</string>
+    <string name="no_orders_message">لم تقم بأي طلبات بعد</string>
+    <string name="notifications_section_title">الإشعارات</string>
+    <string name="enable_notifications">تفعيل الإشعارات</string>
+    <string name="language_section_title">اللغة</string>
+    <string name="logout_button_text">تسجيل الخروج</string>
+    <string name="search_hint"> بحث</string>
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="checkout_title">إتمام الطلب</string>
+    <string name="order_summary_title">ملخص الطلب</string>
+    <string name="subtotal_label">الإجمالي الفرعي:</string>
+    <string name="shipping_label">الشحن:</string>
+    <string name="total_label">الإجمالي الكلي:</string>
+    <string name="shipping_details_title">تفاصيل الشحن</string>
+
+    <string name="address_hint">العنوان</string>
+    <string name="city_hint">المدينة</string>
+    <string name="zip_code_hint">الرمز البريدي</string>
+
+    <string name="payment_method_title">طريقة الدفع</string>
+    <string name="cash_on_delivery_option">الدفع عند الاستلام</string>
+    <string name="credit_card_option">بطاقة ائتمان (غير مفعلة)</string>
+    <string name="confirm_order_button_text">تأكيد الطلب</string>
+    <string name="wishlist_title">قائمة المفضلة</string>
+    <string name="empty_wishlist_message">قائمة المفضلة فارغة. أضف بعض المنتجات!</string>
+    <string name="add_to_cart_button_text">أضف إلى السلة</string>
+    <string name="remove_from_wishlist_description">إزالة من المفضلة</string>
+
+
 </resources>

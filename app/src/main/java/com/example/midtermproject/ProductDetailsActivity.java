@@ -10,10 +10,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 
 public class ProductDetailsActivity extends AppCompatActivity {
@@ -62,6 +60,8 @@ public class ProductDetailsActivity extends AppCompatActivity {
         increaseQuantity = findViewById(R.id.increaseQuantity);
         addToCartButton = findViewById(R.id.addToCartButton);
         buyNowButton = findViewById(R.id.buyNowButton);
+        addToCartButton = findViewById(R.id.addToCartButton);
+        buyNowButton = findViewById(R.id.buyNowButton);
 
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
@@ -104,31 +104,50 @@ public class ProductDetailsActivity extends AppCompatActivity {
         addToCartButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(ProductDetailsActivity.this, quantity + " من " + currentProduct.getName() + " أضيفت إلى السلة", Toast.LENGTH_SHORT).show();
+                if (currentProduct != null) {
+                    // إضافة المنتج إلى سلة التسوق باستخدام CartManager
+                    CartManager.getInstance().addProduct(currentProduct);
+                    Toast.makeText(ProductDetailsActivity.this, currentProduct.getName() + " تم إضافته إلى السلة!", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(ProductDetailsActivity.this, "خطأ: لا يوجد منتج لإضافته.", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
         buyNowButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(ProductDetailsActivity.this, "شراء " + quantity + " من " + currentProduct.getName() + " الآن", Toast.LENGTH_SHORT).show();
+                // TODO: Implement Buy Now logic (e.g., navigate directly to checkout)
+                Toast.makeText(ProductDetailsActivity.this, "شراء الآن!", Toast.LENGTH_SHORT).show();
             }
         });
 
+
         favoriteButton.setOnClickListener(new View.OnClickListener() {
-            boolean isFavorite = false;
             @Override
             public void onClick(View v) {
-                isFavorite = !isFavorite;
-                if (isFavorite) {
-                    favoriteButton.setImageResource(R.drawable.ic_favorite_filled);
-                    Toast.makeText(ProductDetailsActivity.this, "تمت الإضافة إلى المفضلة", Toast.LENGTH_SHORT).show();
-                } else {
-                    favoriteButton.setImageResource(R.drawable.ic_favorite_border);
-                    Toast.makeText(ProductDetailsActivity.this, "تمت الإزالة من المفضلة", Toast.LENGTH_SHORT).show();
+                if (currentProduct != null) {
+                    if (WishlistManager.getInstance().isInWishlist(currentProduct)) {
+                        WishlistManager.getInstance().removeProduct(currentProduct);
+                        favoriteButton.setImageResource(R.drawable.ic_favorite_border);
+                        Toast.makeText(ProductDetailsActivity.this, "أزيل من المفضلة", Toast.LENGTH_SHORT).show();
+                    } else {
+                        WishlistManager.getInstance().addProduct(currentProduct);
+                        favoriteButton.setImageResource(R.drawable.ic_favorite_filled);
+                        Toast.makeText(ProductDetailsActivity.this, "أضيف إلى المفضلة", Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
         });
+        if (currentProduct != null) {
+            if (WishlistManager.getInstance().isInWishlist(currentProduct)) {
+                favoriteButton.setImageResource(R.drawable.ic_favorite_filled);
+            } else {
+                favoriteButton.setImageResource(R.drawable.ic_favorite_border);
+            }
+        }
+
+
     }
 
     private void displayProductDetails() {

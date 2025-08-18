@@ -84,7 +84,6 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void attemptLogin() {
-        // Reset errors
         emailEditText.setError(null);
         passwordEditText.setError(null);
 
