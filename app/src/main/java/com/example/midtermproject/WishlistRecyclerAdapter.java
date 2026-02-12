@@ -3,6 +3,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -45,15 +46,16 @@ public class WishlistRecyclerAdapter extends RecyclerView.Adapter<WishlistRecycl
         diffResult.dispatchUpdatesTo(this);
     }
     class WishlistViewHolder extends RecyclerView.ViewHolder {
-        ImageView productImage, removeButton, addToCartButton;
+        ImageView productImage, removeButton;
+        Button addToCartButton;
         TextView productName, productPrice;
         WishlistViewHolder(@NonNull View itemView) {
             super(itemView);
-            productImage = itemView.findViewById(R.id.wishlistProductImage);
-            productName = itemView.findViewById(R.id.wishlistProductName);
-            productPrice = itemView.findViewById(R.id.wishlistProductPrice);
-            removeButton = itemView.findViewById(R.id.removeFromWishlist);
-            addToCartButton = itemView.findViewById(R.id.addToCartFromWishlist);
+            productImage = itemView.findViewById(R.id.wishlistItemImage);
+            productName = itemView.findViewById(R.id.wishlistItemName);
+            productPrice = itemView.findViewById(R.id.wishlistItemPrice);
+            removeButton = itemView.findViewById(R.id.removeFromWishlistButton);
+            addToCartButton = itemView.findViewById(R.id.addToCartFromWishlistButton);
         }
         void bind(Product product) {
             productImage.setImageResource(product.getImageUrl());
