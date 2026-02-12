@@ -1,5 +1,4 @@
 package com.example.midtermproject;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -12,10 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.ArrayList;
-
-
 public class ProductsActivity extends AppCompatActivity {
-
     private Toolbar toolbar;
     private ImageView searchIcon;
     private ImageView cartIcon;
@@ -26,16 +22,13 @@ public class ProductsActivity extends AppCompatActivity {
     private FloatingActionButton fabQuickAction;
     private androidx.appcompat.widget.SearchView searchView;
     private boolean isAscending = true;
-
     private ArrayList<Product> productList;
     private ProductRecyclerAdapter productAdapter;
     private ImageView userProfileIcon;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_products);
-
         toolbar = findViewById(R.id.toolbar);
         searchIcon = findViewById(R.id.searchIcon);
         cartIcon = findViewById(R.id.cartIcon);
@@ -45,15 +38,11 @@ public class ProductsActivity extends AppCompatActivity {
         productsRecyclerView = findViewById(R.id.productsRecyclerView);
         fabQuickAction = findViewById(R.id.fabQuickAction);
         userProfileIcon = findViewById(R.id.userProfileIcon);
-
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle("");
         }
-
-        // إعداد البحث
         searchView = findViewById(R.id.searchView);
-        
         searchIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -65,21 +54,18 @@ public class ProductsActivity extends AppCompatActivity {
                 }
             }
         });
-
         searchView.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 productAdapter.filter(query);
                 return true;
             }
-
             @Override
             public boolean onQueryTextChange(String newText) {
                 productAdapter.filter(newText);
                 return true;
             }
         });
-
         cartIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -87,13 +73,10 @@ public class ProductsActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
         updateCartBadge();
-
         filterIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // فرز المنتجات حسب السعر
                 if (isAscending) {
                     productList.sort((p1, p2) -> Double.compare(p1.getPrice(), p2.getPrice()));
                     Toast.makeText(ProductsActivity.this, "تم الفرز: من الأقل سعراً", Toast.LENGTH_SHORT).show();
@@ -105,7 +88,6 @@ public class ProductsActivity extends AppCompatActivity {
                 productAdapter.updateList(productList);
             }
         });
-
         userProfileIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -113,13 +95,8 @@ public class ProductsActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-        // إعداد RecyclerView للمنتجات
         productsRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-
         productList = new ArrayList<>();
-
-        // إضافة المنتجات
         productList.add(new Product("p1", "هاتف ذكي حديث", "أحدث هاتف ذكي بمواصفات عالية وكاميرا احترافية وشاشة OLED مذهلة.", 2500.00, 4.5, R.drawable.smartphone_image, 1));
         productList.add(new Product("p2", "سماعات بلوتوث لاسلكية", "سماعات لاسلكية بجودة صوت عالية، عزل ضوضاء ممتاز، وعمر بطارية طويل يصل إلى 30 ساعة.", 350.00, 4.2, R.drawable.headphones_image, 1));
         productList.add(new Product("p3", "ساعة ذكية رياضية", "ساعة ذكية لتتبع اللياقة البدنية، مراقبة معدل ضربات القلب، وتتبع النوم، مقاومة للماء.", 700.00, 4.7, R.drawable.smartwatch_image, 1));
@@ -130,11 +107,8 @@ public class ProductsActivity extends AppCompatActivity {
         productList.add(new Product("p8", "قرص صلب خارجي 2TB", "قرص صلب محمول بسعة 2 تيرابايت، سرعة نقل بيانات عالية، مثالي للنسخ الاحتياطي.", 280.00, 4.4, R.drawable.disk_image, 1));
         productList.add(new Product("p9", "جهاز عرض (بروجيكتور)", "جهاز عرض محمول بدقة Full HD، مثالي للمنزل والمكتب والعروض التقديمية.", 1100.00, 4.1, R.drawable.projector_image, 1));
         productList.add(new Product("p10", "كرسي ألعاب مريح", "كرسي ألعاب بتصميم مريح، دعم للظهر والرقبة، قابل للتعديل بالكامل.", 650.00, 4.9, R.drawable.chair_image, 1));
-
         productAdapter = new ProductRecyclerAdapter(this, productList);
         productsRecyclerView.setAdapter(productAdapter);
-
-        // تعيين مستمع النقر على المنتج
         productAdapter.setOnProductClickListener(new ProductRecyclerAdapter.OnProductClickListener() {
             @Override
             public void onProductClick(Product product) {
@@ -143,22 +117,18 @@ public class ProductsActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
         fabQuickAction.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(ProductsActivity.this, "إجراء سريع قيد التطوير", Toast.LENGTH_SHORT).show();
             }
         });
-
     }
-
     @Override
     protected void onResume() {
         super.onResume();
         updateCartBadge();
     }
-
     private void updateCartBadge() {
         int itemCount = CartManager.getInstance().getCartItemCount();
         if (itemCount > 0) {

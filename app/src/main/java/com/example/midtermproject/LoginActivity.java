@@ -1,7 +1,4 @@
 package com.example.midtermproject;
-
-
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -11,14 +8,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.CheckBox;
-
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.google.android.material.textfield.TextInputEditText;
-
 public class LoginActivity extends AppCompatActivity {
-
     private ImageView backButton;
     private TextInputEditText emailEditText;
     private TextInputEditText passwordEditText;
@@ -27,12 +19,10 @@ public class LoginActivity extends AppCompatActivity {
     private Button loginButton;
     private Button guestLoginButton;
     private TextView registerLink;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
         backButton = findViewById(R.id.backButton);
         emailEditText = findViewById(R.id.emailEditText);
         passwordEditText = findViewById(R.id.passwordEditText);
@@ -41,21 +31,18 @@ public class LoginActivity extends AppCompatActivity {
         loginButton = findViewById(R.id.loginButton);
         guestLoginButton = findViewById(R.id.guestLoginButton);
         registerLink = findViewById(R.id.registerLink);
-
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onBackPressed();
             }
         });
-
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 attemptLogin();
             }
         });
-
         guestLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -65,7 +52,6 @@ public class LoginActivity extends AppCompatActivity {
                 finish();
             }
         });
-
         registerLink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -74,7 +60,6 @@ public class LoginActivity extends AppCompatActivity {
                 finish();
             }
         });
-
         forgotPasswordLink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -82,17 +67,13 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
-
     private void attemptLogin() {
         emailEditText.setError(null);
         passwordEditText.setError(null);
-
         String email = emailEditText.getText().toString().trim();
         String password = passwordEditText.getText().toString().trim();
-
         boolean cancel = false;
         View focusView = null;
-
         if (TextUtils.isEmpty(password)) {
             passwordEditText.setError("كلمة المرور مطلوبة");
             focusView = passwordEditText;
@@ -102,7 +83,6 @@ public class LoginActivity extends AppCompatActivity {
             focusView = passwordEditText;
             cancel = true;
         }
-
         if (TextUtils.isEmpty(email)) {
             emailEditText.setError("البريد الإلكتروني أو اسم المستخدم مطلوب");
             focusView = emailEditText;
@@ -112,7 +92,6 @@ public class LoginActivity extends AppCompatActivity {
             focusView = emailEditText;
             cancel = true;
         }
-
         if (cancel) {
             if (focusView != null) {
                 focusView.requestFocus();
@@ -128,11 +107,9 @@ public class LoginActivity extends AppCompatActivity {
             }
         }
     }
-
     private boolean isValidEmail(CharSequence email) {
         return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
-
     private boolean isPasswordValid(String password) {
         return password.length() >= 6;
     }

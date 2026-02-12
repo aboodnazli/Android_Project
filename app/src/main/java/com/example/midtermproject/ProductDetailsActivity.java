@@ -1,7 +1,4 @@
 package com.example.midtermproject;
-
-
-
 import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Bundle;
@@ -13,9 +10,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
-
 public class ProductDetailsActivity extends AppCompatActivity {
-
     private ImageView productImageLarge;
     private ImageView favoriteButton;
     private TextView productNameDetail;
@@ -32,16 +27,12 @@ public class ProductDetailsActivity extends AppCompatActivity {
     private ImageView increaseQuantity;
     private Button addToCartButton;
     private Button buyNowButton;
-
     private Product currentProduct;
     private int quantity = 1;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_details);
-
-
         Toolbar toolbar = findViewById(R.id.toolbar);
         CollapsingToolbarLayout collapsingToolbar = findViewById(R.id.collapsingToolbar);
         productImageLarge = findViewById(R.id.productImageLarge);
@@ -60,7 +51,6 @@ public class ProductDetailsActivity extends AppCompatActivity {
         increaseQuantity = findViewById(R.id.increaseQuantity);
         addToCartButton = findViewById(R.id.addToCartButton);
         buyNowButton = findViewById(R.id.buyNowButton);
-
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -72,7 +62,6 @@ public class ProductDetailsActivity extends AppCompatActivity {
                 onBackPressed();
             }
         });
-
         Intent intent = getIntent();
         if (intent != null && intent.hasExtra("product")) {
             currentProduct = (Product) intent.getSerializableExtra("product");
@@ -80,7 +69,6 @@ public class ProductDetailsActivity extends AppCompatActivity {
                 displayProductDetails();
             }
         }
-
         decreaseQuantity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -90,7 +78,6 @@ public class ProductDetailsActivity extends AppCompatActivity {
                 }
             }
         });
-
         increaseQuantity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -98,19 +85,16 @@ public class ProductDetailsActivity extends AppCompatActivity {
                 quantityText.setText(String.valueOf(quantity));
             }
         });
-
         addToCartButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (currentProduct != null) {
-                    // تعيين الكمية المختارة
                     currentProduct.setQuantity(quantity);
                     CartManager.getInstance().addProduct(currentProduct);
                     Toast.makeText(ProductDetailsActivity.this, "تم إضافة " + quantity + " من " + currentProduct.getName() + " إلى السلة", Toast.LENGTH_SHORT).show();
                 }
             }
         });
-
         buyNowButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -122,8 +106,6 @@ public class ProductDetailsActivity extends AppCompatActivity {
                 }
             }
         });
-
-
         favoriteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -147,22 +129,17 @@ public class ProductDetailsActivity extends AppCompatActivity {
                 favoriteButton.setImageResource(R.drawable.ic_favorite_border);
             }
         }
-
-
     }
-
     private void displayProductDetails() {
         productImageLarge.setImageResource(currentProduct.getImageUrl());
         productNameDetail.setText(currentProduct.getName());
         ratingText.setText(String.valueOf(currentProduct.getRating()));
         reviewsCount.setText("(125 تقييم)");
         currentPrice.setText(String.format("%.2f ₪", currentProduct.getPrice()));
-
         double originalPriceValue = currentProduct.getPrice() * 1.25;
         originalPrice.setText(String.format("%.2f ₪", originalPriceValue));
         originalPrice.setPaintFlags(originalPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
         discountBadge.setText("خصم 25%");
-
         if (currentProduct.getPrice() > 0) {
             availabilityText.setText("متوفر في المخزن");
             availabilityIndicator.setBackgroundResource(R.drawable.availability_indicator_green);
@@ -170,10 +147,8 @@ public class ProductDetailsActivity extends AppCompatActivity {
             availabilityText.setText("غير متوفر");
             availabilityIndicator.setBackgroundResource(R.drawable.availability_indicator_red);
         }
-
         productDescription.setText(currentProduct.getDescription() + "\n\n" +
                 "هذا نص تجريبي لوصف المنتج. يمكن أن يحتوي على تفاصيل مهمة حول المنتج، مميزاته، طريقة الاستخدام، والمواصفات التقنية. هذا النص قابل للتمرير إذا كان طويلاً.");
-
         CollapsingToolbarLayout collapsingToolbar = findViewById(R.id.collapsingToolbar);
         collapsingToolbar.setTitle(currentProduct.getName());
     }

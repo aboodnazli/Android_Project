@@ -1,5 +1,4 @@
 package com.example.midtermproject;
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,81 +6,64 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
-
 import java.util.ArrayList;
 import java.util.List;
-
 public class ProductRecyclerAdapter extends RecyclerView.Adapter<ProductRecyclerAdapter.ProductViewHolder> {
-
     private Context context;
     private List<Product> productList;
-    private List<Product> allProducts; // قائمة مرجعية للبحث
+    private List<Product> allProducts;
     private OnProductClickListener onProductClickListener;
-
     public interface OnProductClickListener {
         void onProductClick(Product product);
     }
-
     public ProductRecyclerAdapter(Context context, List<Product> productList) {
         this.context = context;
         this.productList = new ArrayList<>(productList);
         this.allProducts = new ArrayList<>(productList);
     }
-
     public void setOnProductClickListener(OnProductClickListener listener) {
         this.onProductClickListener = listener;
     }
-
     @NonNull
     @Override
     public ProductViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.product_item, parent, false);
-        return new ProductViewHolder(view);
+        return new ProductViewHolder(LayoutInflater.from(context).inflate(R.layout.product_item, parent, false));
     }
-
     @Override
     public void onBindViewHolder(@NonNull ProductViewHolder holder, int position) {
-        Product product = productList.get(position);
-        holder.bind(product);
+        holder.bind(productList.get(position));
     }
-
     @Override
     public int getItemCount() {
         return productList.size();
     }
-
     public void updateList(List<Product> newList) {
-        this.productList = new ArrayList<>(newList);
-        notifyDataSetChanged();
+        DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new ProductDiffCallback(this.productList, newList));
+        this.productList.clear();
+        this.productList.addAll(newList);
+        diffResult.dispatchUpdatesTo(this);
     }
-
     public void filter(String query) {
         List<Product> filteredList = new ArrayList<>();
         if (query.isEmpty()) {
             filteredList.addAll(allProducts);
         } else {
+            String lowerQuery = query.toLowerCase();
             for (Product product : allProducts) {
-                if (product.getName().toLowerCase().contains(query.toLowerCase()) ||
-                        product.getDescription().toLowerCase().contains(query.toLowerCase())) {
+                if (product.getName().toLowerCase().contains(lowerQuery) ||
+                        product.getDescription().toLowerCase().contains(lowerQuery)) {
                     filteredList.add(product);
                 }
             }
         }
-        this.productList = filteredList;
-        notifyDataSetChanged();
+        updateList(filteredList);
     }
-
     class ProductViewHolder extends RecyclerView.ViewHolder {
-        ImageView productImage;
-        TextView productName;
-        TextView productDescription;
-        TextView productPrice;
-        TextView productRating;
-        ImageView addToCartButton;
-
+        ImageView productImage, addToCartButton;
+        TextView productName, productDescription, productPrice, productRating;
         ProductViewHolder(@NonNull View itemView) {
             super(itemView);
             productImage = itemView.findViewById(R.id.productImage);
@@ -91,25 +73,35 @@ public class ProductRecyclerAdapter extends RecyclerView.Adapter<ProductRecycler
             productRating = itemView.findViewById(R.id.productRating);
             addToCartButton = itemView.findViewById(R.id.addToCartButton);
         }
-
         void bind(Product product) {
             productImage.setImageResource(product.getImageUrl());
             productName.setText(product.getName());
             productDescription.setText(product.getDescription());
-            productPrice.setText(String.format("%.2f ₪", product.getPrice()));
+            productPrice.setText(product.getPrice() + " ₪");
             productRating.setText(String.valueOf(product.getRating()));
-
             itemView.setOnClickListener(v -> {
-                if (onProductClickListener != null) {
-                    onProductClickListener.onProductClick(product);
-                }
+                if (onProductClickListener != null) onProductClickListener.onProductClick(product);
             });
-
             addToCartButton.setOnClickListener(v -> {
-                product.setQuantity(1); // إضافة قطعة واحدة في الإضافة السريعة
+                product.setQuantity(1);
                 CartManager.getInstance().addProduct(product);
-                Toast.makeText(context, "تم إضافة " + product.getName() + " إلى السلة", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "تمت الإضافة", Toast.LENGTH_SHORT).show();
             });
+        }
+    }
+    private static class ProductDiffCallback extends DiffUtil.Callback {
+        private final List<Product> oldList, newList;
+        ProductDiffCallback(List<Product> oldList, List<Product> newList) {
+            this.oldList = oldList;
+            this.newList = newList;
+        }
+        @Override public int getOldListSize() { return oldList.size(); }
+        @Override public int getNewListSize() { return newList.size(); }
+        @Override public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
+            return oldList.get(oldItemPosition).getId().equals(newList.get(newItemPosition).getId());
+        }
+        @Override public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
+            return oldList.get(oldItemPosition).equals(newList.get(newItemPosition));
         }
     }
 }
