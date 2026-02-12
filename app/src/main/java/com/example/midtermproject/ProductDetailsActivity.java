@@ -60,8 +60,6 @@ public class ProductDetailsActivity extends AppCompatActivity {
         increaseQuantity = findViewById(R.id.increaseQuantity);
         addToCartButton = findViewById(R.id.addToCartButton);
         buyNowButton = findViewById(R.id.buyNowButton);
-        addToCartButton = findViewById(R.id.addToCartButton);
-        buyNowButton = findViewById(R.id.buyNowButton);
 
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
@@ -105,11 +103,10 @@ public class ProductDetailsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (currentProduct != null) {
-                    // إضافة المنتج إلى سلة التسوق باستخدام CartManager
+                    // تعيين الكمية المختارة
+                    currentProduct.setQuantity(quantity);
                     CartManager.getInstance().addProduct(currentProduct);
-                    Toast.makeText(ProductDetailsActivity.this, currentProduct.getName() + " تم إضافته إلى السلة!", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(ProductDetailsActivity.this, "خطأ: لا يوجد منتج لإضافته.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ProductDetailsActivity.this, "تم إضافة " + quantity + " من " + currentProduct.getName() + " إلى السلة", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -117,8 +114,12 @@ public class ProductDetailsActivity extends AppCompatActivity {
         buyNowButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO: Implement Buy Now logic (e.g., navigate directly to checkout)
-                Toast.makeText(ProductDetailsActivity.this, "شراء الآن!", Toast.LENGTH_SHORT).show();
+                if (currentProduct != null) {
+                    currentProduct.setQuantity(quantity);
+                    CartManager.getInstance().addProduct(currentProduct);
+                    Intent intent = new Intent(ProductDetailsActivity.this, ShoppingCartActivity.class);
+                    startActivity(intent);
+                }
             }
         });
 

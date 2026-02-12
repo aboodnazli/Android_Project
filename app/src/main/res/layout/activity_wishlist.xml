@@ -17,14 +17,13 @@
         app:title="@string/wishlist_title"
         app:titleTextColor="@color/textPrimary" />
 
-    <ListView
-        android:id="@+id/wishlistListView"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/wishlistRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:divider="@android:color/transparent"
-        android:dividerHeight="8dp"
         android:padding="8dp"
-        android:clipToPadding="false" />
+        android:clipToPadding="false"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
     <TextView
         android:id="@+id/emptyWishlistText"

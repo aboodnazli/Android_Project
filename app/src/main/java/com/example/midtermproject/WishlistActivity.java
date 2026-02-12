@@ -3,19 +3,20 @@ package com.example.midtermproject;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ListView;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-public class WishlistActivity extends AppCompatActivity {
+public class WishlistActivity extends AppCompatActivity implements WishlistRecyclerAdapter.OnWishlistChangeListener {
 
     private Toolbar toolbar;
-    private ListView wishlistListView;
+    private RecyclerView wishlistRecyclerView;
     private TextView emptyWishlistText;
-    private WishlistAdapter wishlistAdapter;
+    private WishlistRecyclerAdapter wishlistAdapter;
     private List<Product> wishlistItems;
 
     @SuppressLint("MissingInflatedId")
@@ -26,7 +27,7 @@ public class WishlistActivity extends AppCompatActivity {
 
 
         toolbar = findViewById(R.id.toolbar);
-        wishlistListView = findViewById(R.id.wishlistListView);
+        wishlistRecyclerView = findViewById(R.id.wishlistRecyclerView);
         emptyWishlistText = findViewById(R.id.emptyWishlistText);
 
 
@@ -44,8 +45,10 @@ public class WishlistActivity extends AppCompatActivity {
 
 
         wishlistItems = WishlistManager.getInstance().getWishlistItems();
-        wishlistAdapter = new WishlistAdapter(this, wishlistItems);
-        wishlistListView.setAdapter(wishlistAdapter);
+        wishlistRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        wishlistAdapter = new WishlistRecyclerAdapter(this, wishlistItems);
+        wishlistAdapter.setOnWishlistChangeListener(this);
+        wishlistRecyclerView.setAdapter(wishlistAdapter);
 
 
         checkEmptyWishlist();
@@ -55,19 +58,25 @@ public class WishlistActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        wishlistItems.clear();
-        wishlistItems.addAll(WishlistManager.getInstance().getWishlistItems());
-        wishlistAdapter.notifyDataSetChanged();
+        wishlistItems = WishlistManager.getInstance().getWishlistItems();
+        wishlistAdapter.updateList(wishlistItems);
+        checkEmptyWishlist();
+    }
+
+    @Override
+    public void onWishlistChanged() {
+        wishlistItems = WishlistManager.getInstance().getWishlistItems();
+        wishlistAdapter.updateList(wishlistItems);
         checkEmptyWishlist();
     }
 
     private void checkEmptyWishlist() {
         if (wishlistItems.isEmpty()) {
             emptyWishlistText.setVisibility(View.VISIBLE);
-            wishlistListView.setVisibility(View.GONE);
+            wishlistRecyclerView.setVisibility(View.GONE);
         } else {
             emptyWishlistText.setVisibility(View.GONE);
-            wishlistListView.setVisibility(View.VISIBLE);
+            wishlistRecyclerView.setVisibility(View.VISIBLE);
         }
     }
 }

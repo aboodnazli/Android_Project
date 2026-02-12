@@ -18,8 +18,20 @@ public class WelcomeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_welcome);
 
+        // تهيئة المديرين عند بدء التطبيق
+        CartManager.getInstance(this);
+        WishlistManager.getInstance(this);
+        UserManager userManager = UserManager.getInstance(this);
+
+        // التحقق من حالة تسجيل الدخول
+        if (userManager.isLoggedIn()) {
+            startActivity(new Intent(this, ProductsActivity.class));
+            finish();
+            return;
+        }
+
+        setContentView(R.layout.activity_welcome);
 
         loginButton = findViewById(R.id.loginButton);
         registerButton = findViewById(R.id.registerButton);

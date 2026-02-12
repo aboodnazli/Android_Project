@@ -68,10 +68,12 @@ public class SettingsFragment extends Fragment {
         });
 
         logoutButton.setOnClickListener(v -> {
+            // تسجيل الخروج الفعلي
+            UserManager.getInstance().logout();
 
-            Toast.makeText(getContext(), "تم تسجيل الخروج", Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(getActivity(), LoginActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); // Clear back stack
+            Toast.makeText(getContext(), "تم تسجيل الخروج بنجاح", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(getActivity(), WelcomeActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); // مسح سجل التنقل
             startActivity(intent);
             getActivity().finish();
         });

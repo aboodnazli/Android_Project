@@ -140,8 +140,10 @@ public class RegisterActivity extends AppCompatActivity {
                 focusView.requestFocus();
             }
         } else {
+            // حفظ بيانات المستخدم الجديد
+            UserManager.getInstance().registerUser(fullName, email, phone, password);
 
-            Toast.makeText(this, "تم التسجيل بنجاح!", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "تم التسجيل بنجاح! يمكنك الآن تسجيل الدخول.", Toast.LENGTH_LONG).show();
 
             Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
             startActivity(intent);

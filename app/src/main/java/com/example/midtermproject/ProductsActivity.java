@@ -3,9 +3,7 @@ package com.example.midtermproject;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
@@ -24,11 +22,13 @@ public class ProductsActivity extends AppCompatActivity {
     private TextView cartBadge;
     private RecyclerView categoriesRecyclerView;
     private ImageView filterIcon;
-    private ListView productsListView;
+    private RecyclerView productsRecyclerView;
     private FloatingActionButton fabQuickAction;
+    private androidx.appcompat.widget.SearchView searchView;
+    private boolean isAscending = true;
 
     private ArrayList<Product> productList;
-    private ProductAdapter productAdapter;
+    private ProductRecyclerAdapter productAdapter;
     private ImageView userProfileIcon;
 
     @Override
@@ -42,23 +42,41 @@ public class ProductsActivity extends AppCompatActivity {
         cartBadge = findViewById(R.id.cartBadge);
         categoriesRecyclerView = findViewById(R.id.categoriesRecyclerView);
         filterIcon = findViewById(R.id.filterIcon);
-        productsListView = findViewById(R.id.productsListView);
+        productsRecyclerView = findViewById(R.id.productsRecyclerView);
         fabQuickAction = findViewById(R.id.fabQuickAction);
-        cartIcon = findViewById(R.id.cartIcon);
-        cartBadge = findViewById(R.id.cartBadge);
         userProfileIcon = findViewById(R.id.userProfileIcon);
-
-
 
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle("");
         }
 
+        // إعداد البحث
+        searchView = findViewById(R.id.searchView);
+        
         searchIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(ProductsActivity.this, "البحث قيد التطوير", Toast.LENGTH_SHORT).show();
+                if (searchView.getVisibility() == View.GONE) {
+                    searchView.setVisibility(View.VISIBLE);
+                    searchView.setIconified(false);
+                } else {
+                    searchView.setVisibility(View.GONE);
+                }
+            }
+        });
+
+        searchView.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                productAdapter.filter(query);
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                productAdapter.filter(newText);
+                return true;
             }
         });
 
@@ -72,13 +90,22 @@ public class ProductsActivity extends AppCompatActivity {
 
         updateCartBadge();
 
-
         filterIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(ProductsActivity.this, "التصفية قيد التطوير", Toast.LENGTH_SHORT).show();
+                // فرز المنتجات حسب السعر
+                if (isAscending) {
+                    productList.sort((p1, p2) -> Double.compare(p1.getPrice(), p2.getPrice()));
+                    Toast.makeText(ProductsActivity.this, "تم الفرز: من الأقل سعراً", Toast.LENGTH_SHORT).show();
+                } else {
+                    productList.sort((p1, p2) -> Double.compare(p2.getPrice(), p1.getPrice()));
+                    Toast.makeText(ProductsActivity.this, "تم الفرز: من الأعلى سعراً", Toast.LENGTH_SHORT).show();
+                }
+                isAscending = !isAscending;
+                productAdapter.updateList(productList);
             }
         });
+
         userProfileIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -87,11 +114,12 @@ public class ProductsActivity extends AppCompatActivity {
             }
         });
 
-
-        categoriesRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        // إعداد RecyclerView للمنتجات
+        productsRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
 
         productList = new ArrayList<>();
 
+        // إضافة المنتجات
         productList.add(new Product("p1", "هاتف ذكي حديث", "أحدث هاتف ذكي بمواصفات عالية وكاميرا احترافية وشاشة OLED مذهلة.", 2500.00, 4.5, R.drawable.smartphone_image, 1));
         productList.add(new Product("p2", "سماعات بلوتوث لاسلكية", "سماعات لاسلكية بجودة صوت عالية، عزل ضوضاء ممتاز، وعمر بطارية طويل يصل إلى 30 ساعة.", 350.00, 4.2, R.drawable.headphones_image, 1));
         productList.add(new Product("p3", "ساعة ذكية رياضية", "ساعة ذكية لتتبع اللياقة البدنية، مراقبة معدل ضربات القلب، وتتبع النوم، مقاومة للماء.", 700.00, 4.7, R.drawable.smartwatch_image, 1));
@@ -103,15 +131,15 @@ public class ProductsActivity extends AppCompatActivity {
         productList.add(new Product("p9", "جهاز عرض (بروجيكتور)", "جهاز عرض محمول بدقة Full HD، مثالي للمنزل والمكتب والعروض التقديمية.", 1100.00, 4.1, R.drawable.projector_image, 1));
         productList.add(new Product("p10", "كرسي ألعاب مريح", "كرسي ألعاب بتصميم مريح، دعم للظهر والرقبة، قابل للتعديل بالكامل.", 650.00, 4.9, R.drawable.chair_image, 1));
 
-        productAdapter = new ProductAdapter(this, productList);
-        productsListView.setAdapter(productAdapter);
+        productAdapter = new ProductRecyclerAdapter(this, productList);
+        productsRecyclerView.setAdapter(productAdapter);
 
-        productsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        // تعيين مستمع النقر على المنتج
+        productAdapter.setOnProductClickListener(new ProductRecyclerAdapter.OnProductClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Product selectedProduct = productList.get(position);
+            public void onProductClick(Product product) {
                 Intent intent = new Intent(ProductsActivity.this, ProductDetailsActivity.class);
-                intent.putExtra("product", selectedProduct);
+                intent.putExtra("product", product);
                 startActivity(intent);
             }
         });
@@ -124,6 +152,7 @@ public class ProductsActivity extends AppCompatActivity {
         });
 
     }
+
     @Override
     protected void onResume() {
         super.onResume();

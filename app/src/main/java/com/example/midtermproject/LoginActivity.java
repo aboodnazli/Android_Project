@@ -118,11 +118,14 @@ public class LoginActivity extends AppCompatActivity {
                 focusView.requestFocus();
             }
         } else {
-            Toast.makeText(this, "تم تسجيل الدخول بنجاح!", Toast.LENGTH_LONG).show();
-
-            Intent intent = new Intent(LoginActivity.this, ProductsActivity.class);
-            startActivity(intent);
-            finish();
+            if (UserManager.getInstance().loginUser(email, password)) {
+                Toast.makeText(this, "تم تسجيل الدخول بنجاح!", Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(LoginActivity.this, ProductsActivity.class);
+                startActivity(intent);
+                finish();
+            } else {
+                Toast.makeText(this, "البريد الإلكتروني أو كلمة المرور غير صحيحة", Toast.LENGTH_LONG).show();
+            }
         }
     }
 

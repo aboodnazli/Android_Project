@@ -44,15 +44,22 @@ public class PersonalInfoFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        fullNameEditText.setText("محمد أحمد");
-        emailEditText.setText("mohamed.ahmed@example.com");
-        phoneEditText.setText("0599123456");
+        UserManager userManager = UserManager.getInstance();
+        UserManager.User user = userManager.getUser();
+
+        if (user != null) {
+            fullNameEditText.setText(user.fullName);
+            emailEditText.setText(user.email);
+            phoneEditText.setText(user.phone);
+        }
 
         cancelButton.setOnClickListener(v -> {
             Toast.makeText(getContext(), "تم إلغاء التعديلات", Toast.LENGTH_SHORT).show();
-            fullNameEditText.setText("محمد أحمد");
-            emailEditText.setText("mohamed.ahmed@example.com");
-            phoneEditText.setText("0599123456");
+            if (user != null) {
+                fullNameEditText.setText(user.fullName);
+                emailEditText.setText(user.email);
+                phoneEditText.setText(user.phone);
+            }
         });
 
         saveButton.setOnClickListener(v -> {
@@ -60,7 +67,10 @@ public class PersonalInfoFragment extends Fragment {
             String email = emailEditText.getText().toString();
             String phone = phoneEditText.getText().toString();
 
-            Toast.makeText(getContext(), "تم حفظ المعلومات الشخصية", Toast.LENGTH_SHORT).show();
+            if (user != null) {
+                userManager.registerUser(fullName, email, phone, user.password);
+                Toast.makeText(getContext(), "تم حفظ المعلومات الشخصية", Toast.LENGTH_SHORT).show();
+            }
         });
 
         userProfileImage.setOnClickListener(v -> {
