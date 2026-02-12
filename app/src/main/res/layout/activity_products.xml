@@ -1,184 +1,104 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/backgroundColor">
-
-
     <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/backgroundColor"
-        android:elevation="4dp">
-
+        android:background="@color/surfaceColor"
+        app:elevation="0dp">
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:background="@color/colorPrimary"
-
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
-
-            <LinearLayout
+            android:layout_height="?attr/actionBarSize"
+            app:contentInsetStart="16dp"
+            app:contentInsetEnd="16dp">
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:paddingTop="50dp">
-
-
+                android:layout_height="match_parent">
                 <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/app_name"
-                    android:textColor="@android:color/white"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
-
-
-                <ImageView
-                    android:id="@+id/userProfileIcon"
-                    android:layout_width="28dp"
-                    android:layout_height="28dp"
-                    android:src="@drawable/ic_person_outline"
-                    android:contentDescription="@string/user_profile_title"
-                    android:layout_marginEnd="16dp"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:background="?attr/selectableItemBackgroundBorderless" />
-
-                <FrameLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="16dp">
-
+                    android:layout_centerVertical="true"
+                    android:text="Manus Store"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:orientation="horizontal">
                     <ImageView
-                        android:id="@+id/cartIcon"
+                        android:id="@+id/searchIcon"
                         android:layout_width="28dp"
                         android:layout_height="28dp"
-                        android:src="@drawable/ic_shopping_cart"
-                        android:contentDescription="@string/shopping_cart_title"
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:background="?attr/selectableItemBackgroundBorderless" />
-
-                    <TextView
-                        android:id="@+id/cartBadge"
-                        android:layout_width="18dp"
-                        android:layout_height="18dp"
-                        android:layout_gravity="top|end"
-                        android:layout_marginTop="-4dp"
-                        android:layout_marginEnd="-4dp"
-                        android:background="@drawable/badge_background"
-                        android:gravity="center"
-                        android:text="0"
-                        android:textColor="@android:color/white"
-                        android:textSize="10sp"
-                        android:textStyle="bold"
-                        android:visibility="gone" />
-                </FrameLayout>
-
-
-                <ImageView
-                    android:id="@+id/searchIcon"
-                    android:layout_width="28dp"
-                    android:layout_height="28dp"
-                    android:src="@drawable/ic_search"
-                    android:contentDescription="@string/search_hint"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:background="?attr/selectableItemBackgroundBorderless" />
-
-            </LinearLayout>
-
-            <androidx.appcompat.widget.SearchView
-                android:id="@+id/searchView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:background="@android:color/white"
-                android:visibility="gone"
-                app:iconifiedByDefault="false"
-                app:queryHint="ابحث عن منتج..." />
-
+                        android:src="@drawable/ic_search"
+                        android:layout_marginEnd="16dp"
+                        app:tint="@color/textPrimary" />
+                    <ImageView
+                        android:id="@+id/filterIcon"
+                        android:layout_width="28dp"
+                        android:layout_height="28dp"
+                        android:src="@drawable/ic_filter"
+                        android:layout_marginEnd="16dp"
+                        app:tint="@color/textPrimary" />
+                    <FrameLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+                        <ImageView
+                            android:id="@+id/cartIcon"
+                            android:layout_width="28dp"
+                            android:layout_height="28dp"
+                            android:src="@drawable/ic_shopping_cart"
+                            app:tint="@color/textPrimary" />
+                        <TextView
+                            android:id="@+id/cartBadge"
+                            android:layout_width="16dp"
+                            android:layout_height="16dp"
+                            android:layout_gravity="top|end"
+                            android:background="@drawable/badge_background"
+                            android:gravity="center"
+                            android:textColor="@color/white"
+                            android:textSize="10sp"
+                            android:visibility="gone" />
+                    </FrameLayout>
+                    <ImageView
+                        android:id="@+id/userProfileIcon"
+                        android:layout_width="28dp"
+                        android:layout_height="28dp"
+                        android:layout_marginStart="16dp"
+                        android:src="@drawable/ic_person_outline"
+                        app:tint="@color/textPrimary" />
+                </LinearLayout>
+            </RelativeLayout>
         </androidx.appcompat.widget.Toolbar>
-
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/categoriesRecyclerView"
+        <androidx.appcompat.widget.SearchView
+            android:id="@+id/searchView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
-            android:paddingBottom="8dp"
-            android:clipToPadding="false"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
-
-
+            android:layout_margin="12dp"
+            android:visibility="gone"
+            app:iconifiedByDefault="false"
+            app:queryHint="Search products..." />
     </com.google.android.material.appbar.AppBarLayout>
-
-
-
-    <LinearLayout
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/productsRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/appBarLayout"
-        android:orientation="vertical"
-        android:padding="16dp">
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:layout_marginBottom="16dp">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="المنتجات"
-                android:textColor="@color/textPrimary"
-                android:textSize="18sp"
-                android:textStyle="bold" />
-
-            <ImageView
-                android:id="@+id/filterIcon"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@drawable/ic_filter"
-                android:contentDescription="تصفية"
-                android:padding="4dp" />
-
-        </LinearLayout>
-
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/productsRecyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scrollbars="vertical"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
-
-    </LinearLayout>
-
-
+        android:paddingTop="8dp"
+        android:clipToPadding="false"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabQuickAction"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
+        android:layout_gravity="bottom|end"
         android:layout_margin="24dp"
-        android:clickable="true"
-        android:focusable="true"
         android:src="@drawable/ic_add"
         app:backgroundTint="@color/colorPrimary"
-        app:tint="@android:color/white" />
-
-</RelativeLayout>
+        app:tint="@color/white" />
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

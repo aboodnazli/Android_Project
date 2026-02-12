@@ -3,7 +3,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import java.io.Serializable;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,15 +19,11 @@ public class CartManager {
         this.cartItems = loadCartFromPreferences();
     }
     public static synchronized CartManager getInstance(Context context) {
-        if (instance == null) {
-            instance = new CartManager(context);
-        }
+        if (instance == null) instance = new CartManager(context);
         return instance;
     }
     public static synchronized CartManager getInstance() {
-        if (instance == null) {
-            throw new IllegalStateException("CartManager must be initialized with context first");
-        }
+        if (instance == null) throw new IllegalStateException("CartManager must be initialized with context first");
         return instance;
     }
     public void addProduct(Product product) {
@@ -43,16 +38,14 @@ public class CartManager {
         saveCartToPreferences();
     }
     public void removeProduct(Product product) {
-        cartItems.remove(product);
+        cartItems.removeIf(item -> item.getId().equals(product.getId()));
         saveCartToPreferences();
     }
     public void updateProductQuantity(Product product, int quantity) {
         for (Product item : cartItems) {
             if (item.getId().equals(product.getId())) {
                 item.setQuantity(quantity);
-                if (item.getQuantity() <= 0) {
-                    cartItems.remove(item);
-                }
+                if (item.getQuantity() <= 0) cartItems.remove(item);
                 saveCartToPreferences();
                 return;
             }
@@ -63,17 +56,8 @@ public class CartManager {
     }
     public double getCartTotal() {
         double total = 0;
-        for (Product item : cartItems) {
-            total += item.getPrice();
-        }
+        for (Product item : cartItems) total += item.getPrice() * item.getQuantity();
         return total;
-    }
-    public double getSubtotal() {
-        double subtotal = 0;
-        for (Product item : cartItems) {
-            subtotal += item.getPrice() * item.getQuantity();
-        }
-        return subtotal;
     }
     public void clearCart() {
         cartItems.clear();
@@ -83,14 +67,11 @@ public class CartManager {
         return cartItems.size();
     }
     private void saveCartToPreferences() {
-        String json = gson.toJson(cartItems);
-        sharedPreferences.edit().putString(CART_KEY, json).apply();
+        sharedPreferences.edit().putString(CART_KEY, gson.toJson(cartItems)).apply();
     }
     private List<Product> loadCartFromPreferences() {
         String json = sharedPreferences.getString(CART_KEY, "");
-        if (json.isEmpty()) {
-            return new ArrayList<>();
-        }
+        if (json.isEmpty()) return new ArrayList<>();
         Type type = new TypeToken<List<Product>>(){}.getType();
         return gson.fromJson(json, type);
     }

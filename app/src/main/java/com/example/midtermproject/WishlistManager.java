@@ -19,22 +19,16 @@ public class WishlistManager {
         this.wishlistItems = loadWishlistFromPreferences();
     }
     public static synchronized WishlistManager getInstance(Context context) {
-        if (instance == null) {
-            instance = new WishlistManager(context);
-        }
+        if (instance == null) instance = new WishlistManager(context);
         return instance;
     }
     public static synchronized WishlistManager getInstance() {
-        if (instance == null) {
-            throw new IllegalStateException("WishlistManager must be initialized with context first");
-        }
+        if (instance == null) throw new IllegalStateException("WishlistManager must be initialized with context first");
         return instance;
     }
     public void addProduct(Product product) {
         for (Product item : wishlistItems) {
-            if (item.getId().equals(product.getId())) {
-                return; 
-            }
+            if (item.getId().equals(product.getId())) return;
         }
         wishlistItems.add(product);
         saveWishlistToPreferences();
@@ -48,9 +42,7 @@ public class WishlistManager {
     }
     public boolean isInWishlist(Product product) {
         for (Product item : wishlistItems) {
-            if (item.getId().equals(product.getId())) {
-                return true;
-            }
+            if (item.getId().equals(product.getId())) return true;
         }
         return false;
     }
@@ -59,14 +51,11 @@ public class WishlistManager {
         saveWishlistToPreferences();
     }
     private void saveWishlistToPreferences() {
-        String json = gson.toJson(wishlistItems);
-        sharedPreferences.edit().putString(WISHLIST_KEY, json).apply();
+        sharedPreferences.edit().putString(WISHLIST_KEY, gson.toJson(wishlistItems)).apply();
     }
     private List<Product> loadWishlistFromPreferences() {
         String json = sharedPreferences.getString(WISHLIST_KEY, "");
-        if (json.isEmpty()) {
-            return new ArrayList<>();
-        }
+        if (json.isEmpty()) return new ArrayList<>();
         Type type = new TypeToken<List<Product>>(){}.getType();
         return gson.fromJson(json, type);
     }

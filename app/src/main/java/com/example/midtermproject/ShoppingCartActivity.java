@@ -24,8 +24,7 @@ public class ShoppingCartActivity extends AppCompatActivity implements CartRecyc
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setDisplayShowHomeEnabled(true);
-            getSupportActionBar().setTitle(getString(R.string.shopping_cart_title));
+            getSupportActionBar().setTitle("سلة التسوق");
         }
         toolbar.setNavigationOnClickListener(v -> onBackPressed());
         cartRecyclerView = findViewById(R.id.cartRecyclerView);
@@ -38,34 +37,26 @@ public class ShoppingCartActivity extends AppCompatActivity implements CartRecyc
         cartAdapter.setOnCartChangeListener(this);
         cartRecyclerView.setAdapter(cartAdapter);
         updateSubtotal();
-        proceedToCheckoutButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (CartManager.getInstance().getCartItems().isEmpty()) {
-                    Toast.makeText(ShoppingCartActivity.this, "السلة فارغة!", Toast.LENGTH_SHORT).show();
-                } else {
-                    Intent intent = new Intent(ShoppingCartActivity.this, CheckoutActivity.class);
-                    startActivity(intent);
-                }
+        proceedToCheckoutButton.setOnClickListener(v -> {
+            if (cartManager.getCartItems().isEmpty()) {
+                Toast.makeText(this, "السلة فارغة!", Toast.LENGTH_SHORT).show();
+            } else {
+                startActivity(new Intent(this, CheckoutActivity.class));
             }
         });
     }
     @Override
     public void onCartChanged() {
         updateSubtotal();
-        if (cartManager.getCartItemCount() == 0) {
-            Toast.makeText(this, "السلة فارغة", Toast.LENGTH_SHORT).show();
-        }
+        cartAdapter.updateList(cartManager.getCartItems());
     }
     private void updateSubtotal() {
-        double subtotal = cartManager.getSubtotal();
-        subtotalTextView.setText(String.format("%.2f ₪", subtotal));
+        subtotalTextView.setText(cartManager.getCartTotal() + " ₪");
     }
     @Override
     protected void onResume() {
         super.onResume();
-        List<Product> cartItems = cartManager.getCartItems();
-        cartAdapter.updateList(cartItems);
+        cartAdapter.updateList(cartManager.getCartItems());
         updateSubtotal();
     }
 }
