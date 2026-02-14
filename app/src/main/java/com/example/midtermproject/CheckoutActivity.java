@@ -3,7 +3,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -40,17 +39,14 @@ public class CheckoutActivity extends AppCompatActivity {
         paymentMethodRadioGroup = findViewById(R.id.paymentMethodRadioGroup);
         confirmOrderButton = findViewById(R.id.confirmOrderButton);
         setSupportActionBar(toolbar);
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        }
+        if (getSupportActionBar() != null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setNavigationOnClickListener(v -> onBackPressed());
         cartItems = CartManager.getInstance().getCartItems();
         checkoutItemsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         cartAdapter = new CartRecyclerAdapter(this, cartItems);
         checkoutItemsRecyclerView.setAdapter(cartAdapter);
         updateOrderSummary();
-        UserManager userManager = UserManager.getInstance();
-        UserManager.User user = userManager.getUser();
+        UserManager.User user = UserManager.getInstance().getUser();
         if (user != null) {
             fullNameEditText.setText(user.fullName);
             phoneEditText.setText(user.phone);

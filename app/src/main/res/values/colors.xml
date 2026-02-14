@@ -12,4 +12,5 @@
     <color name="errorColor">#D32F2F</color>
     <color name="successColor">#388E3C</color>
     <color name="dividerColor">#BDBDBD</color>
+    <color name="lightGray">#E0E0E0</color>
 </resources>

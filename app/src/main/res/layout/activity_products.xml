@@ -8,89 +8,88 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/surfaceColor"
-        app:elevation="0dp">
+        app:elevation="4dp">
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             app:contentInsetStart="16dp"
             app:contentInsetEnd="16dp">
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
+                    android:layout_weight="1"
                     android:text="Manus Store"
                     android:textColor="@color/colorPrimary"
-                    android:textSize="20sp"
+                    android:textSize="22sp"
                     android:textStyle="bold" />
-                <LinearLayout
+                <ImageView
+                    android:id="@+id/searchIcon"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:src="@drawable/ic_search"
+                    android:layout_marginEnd="16dp"
+                    app:tint="@color/textPrimary" />
+                <ImageView
+                    android:id="@+id/filterIcon"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:src="@drawable/ic_filter"
+                    android:layout_marginEnd="16dp"
+                    app:tint="@color/textPrimary" />
+                <FrameLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:orientation="horizontal">
+                    android:layout_marginEnd="16dp">
                     <ImageView
-                        android:id="@+id/searchIcon"
+                        android:id="@+id/cartIcon"
                         android:layout_width="28dp"
                         android:layout_height="28dp"
-                        android:src="@drawable/ic_search"
-                        android:layout_marginEnd="16dp"
+                        android:src="@drawable/ic_shopping_cart"
                         app:tint="@color/textPrimary" />
-                    <ImageView
-                        android:id="@+id/filterIcon"
-                        android:layout_width="28dp"
-                        android:layout_height="28dp"
-                        android:src="@drawable/ic_filter"
-                        android:layout_marginEnd="16dp"
-                        app:tint="@color/textPrimary" />
-                    <FrameLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
-                        <ImageView
-                            android:id="@+id/cartIcon"
-                            android:layout_width="28dp"
-                            android:layout_height="28dp"
-                            android:src="@drawable/ic_shopping_cart"
-                            app:tint="@color/textPrimary" />
-                        <TextView
-                            android:id="@+id/cartBadge"
-                            android:layout_width="16dp"
-                            android:layout_height="16dp"
-                            android:layout_gravity="top|end"
-                            android:background="@drawable/badge_background"
-                            android:gravity="center"
-                            android:textColor="@color/white"
-                            android:textSize="10sp"
-                            android:visibility="gone" />
-                    </FrameLayout>
-                    <ImageView
-                        android:id="@+id/userProfileIcon"
-                        android:layout_width="28dp"
-                        android:layout_height="28dp"
-                        android:layout_marginStart="16dp"
-                        android:src="@drawable/ic_person_outline"
-                        app:tint="@color/textPrimary" />
-                </LinearLayout>
-            </RelativeLayout>
+                    <TextView
+                        android:id="@+id/cartBadge"
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:layout_gravity="top|end"
+                        android:layout_marginTop="-4dp"
+                        android:layout_marginEnd="-4dp"
+                        android:background="@drawable/badge_background"
+                        android:gravity="center"
+                        android:textColor="@color/white"
+                        android:textSize="10sp"
+                        android:visibility="gone" />
+                </FrameLayout>
+                <ImageView
+                    android:id="@+id/userProfileIcon"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:src="@drawable/ic_person_outline"
+                    app:tint="@color/textPrimary" />
+            </LinearLayout>
         </androidx.appcompat.widget.Toolbar>
         <androidx.appcompat.widget.SearchView
             android:id="@+id/searchView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="12dp"
+            android:background="@drawable/search_background"
             android:visibility="gone"
             app:iconifiedByDefault="false"
-            app:queryHint="Search products..." />
+            app:queryHint="ابحث عن منتجات..." />
     </com.google.android.material.appbar.AppBarLayout>
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/productsRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingTop="8dp"
         android:clipToPadding="false"
+        android:paddingTop="8dp"
+        android:paddingBottom="80dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabQuickAction"
@@ -99,6 +98,6 @@
         android:layout_gravity="bottom|end"
         android:layout_margin="24dp"
         android:src="@drawable/ic_add"
-        app:backgroundTint="@color/colorPrimary"
+        app:backgroundTint="@color/colorAccent"
         app:tint="@color/white" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
