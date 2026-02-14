@@ -12,11 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.textfield.TextInputEditText;
 public class RegisterActivity extends AppCompatActivity {
     private ImageView backButton;
-    private TextInputEditText fullNameEditText;
-    private TextInputEditText emailEditText;
-    private TextInputEditText phoneEditText;
-    private TextInputEditText passwordEditText;
-    private TextInputEditText confirmPasswordEditText;
+    private TextInputEditText fullNameEditText, emailEditText, phoneEditText, passwordEditText, confirmPasswordEditText;
     private CheckBox termsCheckBox;
     private Button registerButton;
     private TextView loginLink;
@@ -33,98 +29,34 @@ public class RegisterActivity extends AppCompatActivity {
         termsCheckBox = findViewById(R.id.termsCheckBox);
         registerButton = findViewById(R.id.registerButton);
         loginLink = findViewById(R.id.loginLink);
-        backButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
-        registerButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                attemptRegistration();
-            }
-        });
-        loginLink.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
-                startActivity(intent);
-                finish();
-            }
+        backButton.setOnClickListener(v -> onBackPressed());
+        registerButton.setOnClickListener(v -> attemptRegistration());
+        loginLink.setOnClickListener(v -> {
+            startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
+            finish();
         });
     }
     private void attemptRegistration() {
-        fullNameEditText.setError(null);
-        emailEditText.setError(null);
-        phoneEditText.setError(null);
-        passwordEditText.setError(null);
-        confirmPasswordEditText.setError(null);
         String fullName = fullNameEditText.getText().toString().trim();
         String email = emailEditText.getText().toString().trim();
         String phone = phoneEditText.getText().toString().trim();
         String password = passwordEditText.getText().toString().trim();
         String confirmPassword = confirmPasswordEditText.getText().toString().trim();
-        boolean cancel = false;
-        View focusView = null;
-        if (TextUtils.isEmpty(fullName)) {
-            fullNameEditText.setError("الاسم الكامل مطلوب");
-            focusView = fullNameEditText;
-            cancel = true;
-        }
-        if (TextUtils.isEmpty(email)) {
-            emailEditText.setError("البريد الإلكتروني مطلوب");
-            focusView = emailEditText;
-            cancel = true;
-        } else if (!isValidEmail(email)) {
-            emailEditText.setError("صيغة البريد الإلكتروني غير صحيحة");
-            focusView = emailEditText;
-            cancel = true;
-        }
-        if (TextUtils.isEmpty(phone)) {
-            phoneEditText.setError("رقم الهاتف مطلوب");
-            focusView = phoneEditText;
-            cancel = true;
-        } else if (phone.length() < 7) {
-            phoneEditText.setError("رقم الهاتف قصير جداً");
-            focusView = phoneEditText;
-            cancel = true;
-        }
-        if (TextUtils.isEmpty(password)) {
-            passwordEditText.setError("كلمة المرور مطلوبة");
-            focusView = passwordEditText;
-            cancel = true;
-        } else if (!isPasswordValid(password)) {
-            passwordEditText.setError("كلمة المرور قصيرة جداً (على الأقل 6 أحرف)");
-            focusView = passwordEditText;
-            cancel = true;
+        if (TextUtils.isEmpty(fullName) || TextUtils.isEmpty(email) || TextUtils.isEmpty(password)) {
+            Toast.makeText(this, "الرجاء تعبئة جميع الحقول الإجبارية", Toast.LENGTH_SHORT).show();
+            return;
         }
         if (!password.equals(confirmPassword)) {
-            confirmPasswordEditText.setError("كلمة المرور غير متطابقة");
-            focusView = confirmPasswordEditText;
-            cancel = true;
+            Toast.makeText(this, "كلمات المرور غير متطابقة", Toast.LENGTH_SHORT).show();
+            return;
         }
         if (!termsCheckBox.isChecked()) {
-            Toast.makeText(this, "يجب الموافقة على الشروط والأحكام", Toast.LENGTH_SHORT).show();
-            focusView = termsCheckBox;
-            cancel = true;
+            Toast.makeText(this, "يجب الموافقة على الشروط", Toast.LENGTH_SHORT).show();
+            return;
         }
-        if (cancel) {
-            if (focusView != null) {
-                focusView.requestFocus();
-            }
-        } else {
-            UserManager.getInstance().registerUser(fullName, email, phone, password);
-            Toast.makeText(this, "تم التسجيل بنجاح! يمكنك الآن تسجيل الدخول.", Toast.LENGTH_LONG).show();
-            Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
-            startActivity(intent);
-            finish();
-        }
-    }
-    private boolean isValidEmail(CharSequence email) {
-        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
-    }
-    private boolean isPasswordValid(String password) {
-        return password.length() >= 6;
+        UserManager.getInstance().registerUser(fullName, email, phone, password);
+        Toast.makeText(this, "تم التسجيل بنجاح!", Toast.LENGTH_LONG).show();
+        startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
+        finish();
     }
 }

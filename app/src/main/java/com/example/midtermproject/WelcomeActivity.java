@@ -12,10 +12,7 @@ public class WelcomeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        CartManager.getInstance(this);
-        WishlistManager.getInstance(this);
-        UserManager userManager = UserManager.getInstance(this);
-        if (userManager.isLoggedIn()) {
+        if (UserManager.getInstance().isLoggedIn()) {
             startActivity(new Intent(this, ProductsActivity.class));
             finish();
             return;
@@ -24,28 +21,13 @@ public class WelcomeActivity extends AppCompatActivity {
         loginButton = findViewById(R.id.loginButton);
         registerButton = findViewById(R.id.registerButton);
         browseAsGuestTextView = findViewById(R.id.browseAsGuest);
-        loginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(WelcomeActivity.this, LoginActivity.class);
-                startActivity(intent);
-            }
-        });
-        registerButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(WelcomeActivity.this, RegisterActivity.class);
-                startActivity(intent);
-            }
-        });
-        browseAsGuestTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(WelcomeActivity.this, ProductsActivity.class);
-                intent.putExtra("isGuest", true);
-                startActivity(intent);
-                finish();
-            }
+        loginButton.setOnClickListener(v -> startActivity(new Intent(WelcomeActivity.this, LoginActivity.class)));
+        registerButton.setOnClickListener(v -> startActivity(new Intent(WelcomeActivity.this, RegisterActivity.class)));
+        browseAsGuestTextView.setOnClickListener(v -> {
+            Intent intent = new Intent(WelcomeActivity.this, ProductsActivity.class);
+            intent.putExtra("isGuest", true);
+            startActivity(intent);
+            finish();
         });
     }
 }

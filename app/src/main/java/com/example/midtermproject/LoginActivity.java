@@ -31,86 +31,35 @@ public class LoginActivity extends AppCompatActivity {
         loginButton = findViewById(R.id.loginButton);
         guestLoginButton = findViewById(R.id.guestLoginButton);
         registerLink = findViewById(R.id.registerLink);
-        backButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
+        backButton.setOnClickListener(v -> onBackPressed());
+        loginButton.setOnClickListener(v -> attemptLogin());
+        guestLoginButton.setOnClickListener(v -> {
+            Intent intent = new Intent(LoginActivity.this, ProductsActivity.class);
+            intent.putExtra("isGuest", true);
+            startActivity(intent);
+            finish();
         });
-        loginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                attemptLogin();
-            }
+        registerLink.setOnClickListener(v -> {
+            startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
+            finish();
         });
-        guestLoginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(LoginActivity.this, ProductsActivity.class);
-                intent.putExtra("isGuest", true);
-                startActivity(intent);
-                finish();
-            }
-        });
-        registerLink.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
-                startActivity(intent);
-                finish();
-            }
-        });
-        forgotPasswordLink.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(LoginActivity.this, "نسيت كلمة المرور؟ هذه الميزة قيد التطوير.", Toast.LENGTH_SHORT).show();
-            }
-        });
+        forgotPasswordLink.setOnClickListener(v -> Toast.makeText(LoginActivity.this, "نسيت كلمة المرور؟ هذه الميزة قيد التطوير.", Toast.LENGTH_SHORT).show());
     }
     private void attemptLogin() {
         emailEditText.setError(null);
         passwordEditText.setError(null);
         String email = emailEditText.getText().toString().trim();
         String password = passwordEditText.getText().toString().trim();
-        boolean cancel = false;
-        View focusView = null;
-        if (TextUtils.isEmpty(password)) {
-            passwordEditText.setError("كلمة المرور مطلوبة");
-            focusView = passwordEditText;
-            cancel = true;
-        } else if (!isPasswordValid(password)) {
-            passwordEditText.setError("كلمة المرور قصيرة جداً");
-            focusView = passwordEditText;
-            cancel = true;
+        if (TextUtils.isEmpty(email) || TextUtils.isEmpty(password)) {
+            Toast.makeText(this, "الرجاء تعبئة جميع الحقول", Toast.LENGTH_SHORT).show();
+            return;
         }
-        if (TextUtils.isEmpty(email)) {
-            emailEditText.setError("البريد الإلكتروني أو اسم المستخدم مطلوب");
-            focusView = emailEditText;
-            cancel = true;
-        } else if (!isValidEmail(email)) {
-            emailEditText.setError("صيغة البريد الإلكتروني غير صحيحة");
-            focusView = emailEditText;
-            cancel = true;
-        }
-        if (cancel) {
-            if (focusView != null) {
-                focusView.requestFocus();
-            }
+        if (UserManager.getInstance().loginUser(email, password)) {
+            Toast.makeText(this, "تم تسجيل الدخول بنجاح!", Toast.LENGTH_LONG).show();
+            startActivity(new Intent(LoginActivity.this, ProductsActivity.class));
+            finish();
         } else {
-            if (UserManager.getInstance().loginUser(email, password)) {
-                Toast.makeText(this, "تم تسجيل الدخول بنجاح!", Toast.LENGTH_LONG).show();
-                Intent intent = new Intent(LoginActivity.this, ProductsActivity.class);
-                startActivity(intent);
-                finish();
-            } else {
-                Toast.makeText(this, "البريد الإلكتروني أو كلمة المرور غير صحيحة", Toast.LENGTH_LONG).show();
-            }
+            Toast.makeText(this, "البريد الإلكتروني أو كلمة المرور غير صحيحة", Toast.LENGTH_LONG).show();
         }
-    }
-    private boolean isValidEmail(CharSequence email) {
-        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
-    }
-    private boolean isPasswordValid(String password) {
-        return password.length() >= 6;
     }
 }
