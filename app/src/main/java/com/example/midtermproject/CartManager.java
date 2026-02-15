@@ -1,78 +1,54 @@
 package com.example.midtermproject;
 import android.content.Context;
-import android.content.SharedPreferences;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 public class CartManager {
     private static CartManager instance;
-    private List<Product> cartItems;
-    private SharedPreferences sharedPreferences;
-    private static final String PREF_NAME = "CartPreferences";
-    private static final String CART_KEY = "cart_items";
-    private Gson gson;
+    private ProductDao productDao;
     private CartManager(Context context) {
-        this.gson = new Gson();
-        this.sharedPreferences = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
-        this.cartItems = loadCartFromPreferences();
+        productDao = AppDatabase.getInstance(context).productDao();
     }
     public static synchronized CartManager getInstance(Context context) {
         if (instance == null) instance = new CartManager(context);
         return instance;
     }
     public static synchronized CartManager getInstance() {
-        if (instance == null) throw new IllegalStateException("CartManager must be initialized with context first");
         return instance;
     }
     public void addProduct(Product product) {
-        for (Product item : cartItems) {
+        List<Product> items = productDao.getAllProducts();
+        for (Product item : items) {
             if (item.getId().equals(product.getId())) {
                 item.setQuantity(item.getQuantity() + product.getQuantity());
-                saveCartToPreferences();
+                productDao.updateProduct(item);
                 return;
             }
         }
-        cartItems.add(product);
-        saveCartToPreferences();
+        productDao.insertProduct(product);
     }
     public void removeProduct(Product product) {
-        cartItems.removeIf(item -> item.getId().equals(product.getId()));
-        saveCartToPreferences();
+        productDao.deleteProduct(product);
     }
     public void updateProductQuantity(Product product, int quantity) {
-        for (Product item : cartItems) {
-            if (item.getId().equals(product.getId())) {
-                item.setQuantity(quantity);
-                if (item.getQuantity() <= 0) cartItems.remove(item);
-                saveCartToPreferences();
-                return;
-            }
+        if (quantity <= 0) {
+            productDao.deleteProduct(product);
+        } else {
+            product.setQuantity(quantity);
+            productDao.updateProduct(product);
         }
     }
     public List<Product> getCartItems() {
-        return new ArrayList<>(cartItems);
+        return productDao.getAllProducts();
     }
     public double getCartTotal() {
         double total = 0;
-        for (Product item : cartItems) total += item.getPrice() * item.getQuantity();
+        for (Product item : productDao.getAllProducts()) total += item.getPrice() * item.getQuantity();
         return total;
     }
     public void clearCart() {
-        cartItems.clear();
-        saveCartToPreferences();
+        productDao.deleteAll();
     }
     public int getCartItemCount() {
-        return cartItems.size();
-    }
-    private void saveCartToPreferences() {
-        sharedPreferences.edit().putString(CART_KEY, gson.toJson(cartItems)).apply();
-    }
-    private List<Product> loadCartFromPreferences() {
-        String json = sharedPreferences.getString(CART_KEY, "");
-        if (json.isEmpty()) return new ArrayList<>();
-        Type type = new TypeToken<List<Product>>(){}.getType();
-        return gson.fromJson(json, type);
+        return productDao.getAllProducts().size();
     }
 }
